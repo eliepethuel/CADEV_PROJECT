@@ -1,0 +1,87 @@
+<template>
+  <style>
+    #root { position: absolute; inset: 0; overflow: hidden; }
+    #s8-clip { position: absolute; inset: 0; }
+    #s8-page { position: absolute; left: 110px; top: 90px; width: 1700px; }
+    #s8-page h2 { margin: 0 0 34px; font: 700 64px/1 "Space Grotesk", sans-serif; letter-spacing: -0.03em; color: #e9f2ed; }
+    #s8-page h2 span { color: #93a79e; }
+    #s8-drag { position: relative; z-index: 20; }
+    #s8-page .ui-col { position: relative; z-index: 1; }
+    #s8-page #s8-col-todo { z-index: 5; }
+  </style>
+  <div id="root" data-composition-id="s8-taches" data-width="1920" data-height="1080">
+    <div id="s8-clip" class="clip" data-start="0" data-duration="3.4" data-layout-allow-overflow>
+      <div id="s8-page">
+        <h2>Tâches <span>· AgriMarché</span></h2>
+        <div class="ui-kanban">
+          <section class="ui-col" id="s8-col-todo">
+            <h4>À faire <i id="s8-n-todo">2</i></h4>
+            <div class="ui-task" id="s8-drag" data-layout-allow-overlap>
+              <b>Maquetter la page de consultation</b>
+              <div class="row"><span class="ui-badge">Moyenne</span><span class="ui-badge brand">Kofi Mensah</span></div>
+            </div>
+            <div class="ui-task" id="s8-guide">
+              <b>Rédiger le guide de contribution</b>
+              <div class="row"><span class="ui-badge">Basse</span></div>
+            </div>
+          </section>
+          <section class="ui-col" id="s8-col-doing">
+            <h4>En cours <i id="s8-n-doing">1</i></h4>
+            <div class="ui-task">
+              <b>Créer l'API de consultation des prix</b>
+              <div class="row"><span class="ui-badge danger">Haute</span><span class="ui-badge brand">Awa Diop</span></div>
+            </div>
+            <div class="ui-task" id="s8-placed">
+              <b>Maquetter la page de consultation</b>
+              <div class="row"><span class="ui-badge">Moyenne</span><span class="ui-badge brand">Kofi Mensah</span></div>
+            </div>
+          </section>
+          <section class="ui-col"><h4>En revue <i>0</i></h4></section>
+          <section class="ui-col">
+            <h4>Terminée <i>1</i></h4>
+            <div class="ui-task">
+              <b>Modéliser les marchés et les produits</b>
+              <div class="row"><span class="ui-badge danger">Haute</span><span class="ui-badge brand">Awa Diop</span></div>
+            </div>
+          </section>
+          <section class="ui-col"><h4>Bloquée <i>0</i></h4></section>
+        </div>
+      </div>
+      <svg class="ui-cursor" id="s8-cursor" viewBox="0 0 32 32" aria-hidden="true">
+        <path d="M5 3 L5 25 L11 19 L15 28 L19 26 L15 17 L23 17 Z" fill="#ffffff" stroke="#050b08" stroke-width="1.6" stroke-linejoin="round" />
+      </svg>
+    </div>
+  </div>
+  <script>
+    const tl = gsap.timeline({ paused: true });
+    tl.fromTo("#s8-page h2", { opacity: 0, filter: "blur(8px)" }, { opacity: 1, filter: "blur(0px)", duration: 0.2, ease: "power4.out" }, 0);
+    tl.fromTo(".ui-col", { y: 70, opacity: 0 }, { y: 0, opacity: 1, duration: 0.7, stagger: 0.05, ease: "expo.out" }, 0.05);
+    // Position d'arrivée mesurée dans la mise en page (avant toute animation).
+    const offsetIn = (el) => { let x = 0, y = 0; for (let n = el; n && n.id !== "s8-page"; n = n.offsetParent) { x += n.offsetLeft; y += n.offsetTop; } return { x, y }; };
+    const from = offsetIn(document.querySelector("#s8-drag"));
+    const to = offsetIn(document.querySelector("#s8-placed"));
+    const dx = to.x - from.x, dy = to.y - from.y;
+    const grabX = 330, grabY = 300;
+    tl.set("#s8-placed", { opacity: 0 }, 0);
+    // La carte de Kofi est saisie puis glissée vers « En cours ».
+    tl.fromTo("#s8-cursor", { x: 1700, y: 1120 }, { x: grabX, y: grabY, duration: 0.6, ease: "power3.inOut" }, 0.35);
+    tl.to("#s8-cursor", { scale: 0.85, duration: 0.07, ease: "power2.in" }, 0.95);
+    tl.to("#s8-drag", { scale: 1.04, rotation: -2, boxShadow: "0 30px 60px rgba(0,0,0,0.6)", borderColor: "rgba(52,211,153,0.6)", duration: 0.18, ease: "power2.out" }, 0.98);
+    tl.to("#s8-drag", { x: dx, y: dy, duration: 0.9, ease: "power2.inOut" }, 1.15);
+    tl.to("#s8-cursor", { x: grabX + dx, y: grabY + dy, duration: 0.9, ease: "power2.inOut" }, 1.15);
+    tl.to("#s8-guide", { y: -(document.querySelector("#s8-drag").offsetHeight + 16), duration: 0.45, ease: "expo.out" }, 1.4);
+    tl.fromTo("#s8-col-doing", { borderColor: "rgba(52,211,153,0)", backgroundColor: "#13221c" },
+      { borderColor: "rgba(52,211,153,0.6)", backgroundColor: "rgba(16,185,129,0.1)", duration: 0.3, ease: "power2.out" }, 1.5);
+    // Dépôt : la carte se pose, les compteurs changent.
+    tl.to("#s8-drag", { scale: 1, rotation: 0, boxShadow: "0 0 0 rgba(0,0,0,0)", duration: 0.25, ease: "expo.out" }, 2.05);
+    tl.to("#s8-cursor", { scale: 1, duration: 0.2, ease: "power2.out" }, 2.05);
+    tl.set("#s8-drag", { opacity: 0 }, 2.3);
+    tl.set("#s8-placed", { opacity: 1 }, 2.3);
+    tl.to("#s8-col-doing", { borderColor: "rgba(52,211,153,0)", backgroundColor: "#13221c", duration: 0.4, ease: "power2.out" }, 2.3);
+    tl.set("#s8-n-todo", { textContent: "1" }, 2.1);
+    tl.set("#s8-n-doing", { textContent: "2" }, 2.1);
+    tl.fromTo("#s8-n-doing", { scale: 1 }, { scale: 1.35, duration: 0.15, yoyo: true, repeat: 1, ease: "power2.out" }, 2.1);
+    tl.to("#s8-cursor", { x: 1500, y: 1180, opacity: 0, duration: 0.45, ease: "power3.in" }, 2.6);
+    window.__timelines["s8-taches"] = tl;
+  </script>
+</template>

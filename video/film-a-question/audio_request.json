@@ -1,0 +1,23 @@
+{
+  "provider": "kokoro",
+  "voice": "ff_siwis",
+  "lang": "fr",
+  "speed": 0.95,
+  "lines": [
+    { "id": "a01", "text": "Dakar, vingt-trois heures. Awa est bloquée sur son API." },
+    { "id": "a02", "text": "Sa question se perd dans le flot des messages." },
+    { "id": "a03", "text": "Alors, elle la pose sur AfriDev Community." },
+    { "id": "a04", "text": "La réponse arrive, claire, adaptée à son contexte. Question résolue." },
+    { "id": "a05", "text": "Pour son projet, AgriMarché, il lui faut un développeur React." },
+    { "id": "a06", "text": "Elle trouve Kofi, à Accra." },
+    { "id": "a07", "text": "Kofi demande à rejoindre l'équipe. Demande acceptée." },
+    { "id": "a08", "text": "Les tâches avancent, d'une colonne à l'autre." },
+    { "id": "a09", "text": "Et au bout du chemin, des opportunités vérifiées." },
+    { "id": "a10", "text": "Une question à Dakar. Une équipe entre deux pays." },
+    { "id": "a11", "text": "AfriDev Community. De la discussion à l'opportunité." }
+  ],
+  "bgm": {
+    "mode": "generate",
+    "prompt": "warm afro electronic instrumental, organic wooden percussion, kalimba plucks, soft round bass, hopeful and building, no vocals, 104 bpm"
+  }
+}

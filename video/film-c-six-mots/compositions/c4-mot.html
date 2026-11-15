@@ -1,0 +1,77 @@
+<template>
+  <style>
+    #root { position: absolute; inset: 0; overflow: hidden; }
+    #c4-clip { position: absolute; inset: 0; }
+    #c4-ground { position: absolute; inset: 0; background: #0b2a1f; }
+    .c4-half { position: absolute; left: 0; right: 0; top: 0; height: 1080px; display: grid; place-items: center;
+      font: 700 300px/1 "Space Grotesk", sans-serif; letter-spacing: -0.04em; color: #e9f2ed; white-space: nowrap; }
+    #c4-top { clip-path: inset(0 0 50% 0); }
+    #c4-bottom { clip-path: inset(50% 0 0 0); }
+    #c4-ui { position: absolute; left: 0; right: 0; top: 0; height: 1080px; display: grid; place-items: center; }
+    #c4-ui .ui-postcard h3, #c4-ui .c-title { margin: 22px 0 0; font: 700 54px/1.12 "Space Grotesk", sans-serif; letter-spacing: -0.02em; color: #e9f2ed; }
+    #c4-ui .ui-postcard p, #c4-ui .c-sub, #c4-ui .c-quote { margin: 18px 0 0; font: 400 30px/1.45 "Inter", sans-serif; color: #93a79e; }
+    #c4-ui .c-quote { margin: 26px 0; padding: 22px 28px; border-radius: 18px; background: rgba(255,255,255,0.03); color: #c9d6cf; }
+    #c4-ui .row { display: flex; gap: 14px; flex-wrap: wrap; align-items: center; }
+    #c4-ui .c-pair { display: grid; grid-template-columns: 1fr 1fr; gap: 30px; width: 1500px; }
+    #c4-ui .c-person { display: flex; gap: 26px; align-items: center; padding: 36px 40px; }
+    #c4-ui .c-person b { display: block; font: 700 40px/1.1 "Space Grotesk", sans-serif; color: #e9f2ed; }
+    #c4-ui .c-person .h { display: block; margin: 8px 0 16px; font: 400 28px/1.3 "Inter", sans-serif; color: #93a79e; }
+    #c4-ui .c-stats { display: grid; grid-template-columns: repeat(4, 1fr); gap: 26px; width: 1500px; }
+    #c4-ui .c-stat { padding: 36px 34px; }
+    #c4-ui .c-stat b { display: block; font: 700 110px/1 "Space Grotesk", sans-serif; letter-spacing: -0.04em; color: #e9f2ed; }
+    #c4-ui .c-stat > span { display: block; margin-top: 14px; font: 500 28px/1.3 "Inter", sans-serif; color: #93a79e; }
+    #c4-ui .c-who { position: absolute; top: 770px; display: flex; align-items: center; gap: 16px; font: 600 30px/1 "Inter", sans-serif; color: #e9f2ed; }
+  </style>
+  <div id="root" data-composition-id="c4-mot" data-width="1920" data-height="1080">
+    <div id="c4-clip" class="clip" data-start="0" data-duration="4.6" data-layout-allow-overflow>
+      <div id="c4-ground"></div>
+      <div id="c4-ui">
+    <div class="ui-panel" id="c4-board" style="width: 1300px; padding: 30px">
+      <div class="ui-kanban" style="grid-template-columns: repeat(3, 1fr)">
+        <section class="ui-col c4-col" style="min-height: 430px"><h4>À faire <i id="c4-n1">2</i></h4>
+          <div class="ui-task" id="c4-drag" data-layout-allow-overlap><b>Maquetter la page de consultation</b><div class="row"><span class="ui-badge">Moyenne</span><span class="ui-badge brand">Kofi Mensah</span></div></div>
+          <div class="ui-task" id="c4-guide"><b>Rédiger le guide de contribution</b><div class="row"><span class="ui-badge">Basse</span></div></div>
+        </section>
+        <section class="ui-col c4-col" id="c4-doing" style="min-height: 430px"><h4>En cours <i id="c4-n2">1</i></h4>
+          <div class="ui-task"><b>Créer l'API de consultation des prix</b><div class="row"><span class="ui-badge danger">Haute</span><span class="ui-badge brand">Awa Diop</span></div></div>
+          <div class="ui-task" id="c4-placed"><b>Maquetter la page de consultation</b><div class="row"><span class="ui-badge">Moyenne</span><span class="ui-badge brand">Kofi Mensah</span></div></div>
+        </section>
+        <section class="ui-col c4-col" style="min-height: 430px"><h4>Terminée <i>1</i></h4>
+          <div class="ui-task"><b>Modéliser les marchés et les produits</b><div class="row"><span class="ui-badge danger">Haute</span></div></div>
+        </section>
+      </div>
+    </div>
+      </div>
+      <div class="c4-half" id="c4-top" aria-hidden="true" data-layout-allow-overlap data-layout-allow-occlusion>PROJET</div>
+      <div class="c4-half" id="c4-bottom" data-layout-allow-overlap data-layout-allow-occlusion>PROJET</div>
+    </div>
+  </div>
+  <script>
+    const tl = gsap.timeline({ paused: true });
+    // Le mot se pose plein cadre, coupé net sur le temps.
+    tl.fromTo(".c4-half", { scale: 1.12, opacity: 0.4, filter: "blur(8px)" },
+      { scale: 1, opacity: 1, filter: "blur(0px)", duration: 0.35, ease: "expo.out" }, 0);
+    // Il se fend : ses moitiés encadrent l'écran réel de l'étape.
+    tl.to("#c4-top", { y: -380, duration: 0.6, ease: "power3.inOut" }, 0.95);
+    tl.to("#c4-bottom", { y: 380, duration: 0.6, ease: "power3.inOut" }, 0.95);
+    tl.fromTo("#c4-ui", { opacity: 0, scale: 0.86, filter: "blur(10px)" },
+      { opacity: 1, scale: 1, filter: "blur(0px)", duration: 0.7, ease: "expo.out" }, 1.05);
+    const off = (el) => { let x = 0, y = 0; for (let n = el; n && n.id !== "c4-board"; n = n.offsetParent) { x += n.offsetLeft; y += n.offsetTop; } return { x, y }; };
+    const f = off(document.querySelector("#c4-drag")), t = off(document.querySelector("#c4-placed"));
+    tl.set("#c4-placed", { opacity: 0 }, 0);
+    tl.to("#c4-drag", { scale: 1.04, rotation: -2, borderColor: "rgba(52,211,153,0.6)", duration: 0.18, ease: "power2.out" }, 1.7);
+    tl.to("#c4-drag", { x: t.x - f.x, y: t.y - f.y, duration: 0.9, ease: "power2.inOut" }, 1.85);
+    tl.to("#c4-guide", { y: -(document.querySelector("#c4-drag").offsetHeight + 16), duration: 0.45, ease: "expo.out" }, 2.1);
+    tl.to("#c4-drag", { scale: 1, rotation: 0, duration: 0.25, ease: "expo.out" }, 2.75);
+    tl.set("#c4-drag", { opacity: 0 }, 3.0);
+    tl.set("#c4-placed", { opacity: 1 }, 3.0);
+    tl.set("#c4-n1", { textContent: "1" }, 2.8);
+    tl.set("#c4-n2", { textContent: "2" }, 2.8);
+    // Tout se referme sur le mot suivant.
+    tl.to("#c4-ui", { opacity: 0, scale: 0.9, filter: "blur(10px)", duration: 0.3, ease: "power3.in" }, 3.85);
+    tl.to("#c4-top", { y: 0, duration: 0.35, ease: "power3.in" }, 3.85);
+    tl.to("#c4-bottom", { y: 0, duration: 0.35, ease: "power3.in" }, 3.85);
+    tl.to(".c4-half", { scale: 0.8, opacity: 0, filter: "blur(12px)", duration: 0.25, ease: "power3.in" }, 4.2);
+    window.__timelines["c4-mot"] = tl;
+  </script>
+</template>

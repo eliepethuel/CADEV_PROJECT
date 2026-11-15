@@ -1,0 +1,70 @@
+<template>
+  <style>
+    #root { position: absolute; inset: 0; overflow: hidden; }
+    #s4-clip { position: absolute; inset: 0; }
+    #s4-page { position: absolute; left: 200px; top: 80px; width: 1520px; }
+    #s4-head { padding: 36px 44px; }
+    #s4-head h3 { margin: 18px 0 0; font: 700 52px/1.12 "Space Grotesk", sans-serif; letter-spacing: -0.025em; color: #e9f2ed; }
+    #s4-answer { margin-top: 30px; padding: 40px 44px; border-color: #1e3029; }
+    #s4-answer .who { display: flex; align-items: center; gap: 18px; }
+    #s4-answer .who b { display: block; font: 700 30px/1.2 "Inter", sans-serif; color: #e9f2ed; }
+    #s4-answer .who div span { color: #93a79e; font: 400 28px/1.2 "Inter", sans-serif; }
+    #s4-text { margin-top: 26px; font: 400 34px/1.5 "Inter", sans-serif; color: #c9d6cf; }
+    #s4-text .ui-code { font-size: 30px; }
+    #s4-actions { margin-top: 30px; display: flex; align-items: center; gap: 22px; }
+    #s4-accepted { position: absolute; left: 44px; bottom: 40px; }
+    #s4-resolved { margin-left: 4px; }
+  </style>
+  <div id="root" data-composition-id="s4-reponse" data-width="1920" data-height="1080">
+    <div id="s4-clip" class="clip" data-start="0" data-duration="5.2" data-layout-allow-overflow>
+      <div id="s4-page">
+        <header class="ui-panel" id="s4-head">
+          <div class="row" style="display: flex; gap: 14px">
+            <span class="ui-badge ocre">Question</span>
+            <span class="ui-badge">Backend et API</span>
+            <span class="ui-badge brand" id="s4-resolved">✓ Résolue</span>
+          </div>
+          <h3>Comment éviter les requêtes N+1 dans une API Django REST Framework ?</h3>
+        </header>
+        <section class="ui-panel" id="s4-answer" style="position: relative">
+          <div class="who">
+            <span class="ui-avatar g3" style="width: 72px; height: 72px; font-size: 30px">KA</span>
+            <div><b>Kwame Asante</b><span>Architecte logiciel Go · Kumasi</span></div>
+          </div>
+          <p id="s4-text">
+            <span class="t">Ajoutez</span> <span class="ui-code t">select_related('author')</span>
+            <span class="t">pour les clés étrangères et</span> <span class="ui-code t">prefetch_related</span>
+            <span class="t">pour les relations multiples dans le queryset de la vue.</span>
+          </p>
+          <div id="s4-actions">
+            <span class="ui-button" id="s4-accept">Accepter cette réponse</span>
+          </div>
+        </section>
+      </div>
+      <svg class="ui-cursor" id="s4-cursor" viewBox="0 0 32 32" aria-hidden="true">
+        <path d="M5 3 L5 25 L11 19 L15 28 L19 26 L15 17 L23 17 Z" fill="#ffffff" stroke="#050b08" stroke-width="1.6" stroke-linejoin="round" />
+      </svg>
+    </div>
+  </div>
+  <script>
+    const tl = gsap.timeline({ paused: true });
+    tl.fromTo("#s4-head", { y: -30, opacity: 0 }, { y: 0, opacity: 1, duration: 0.6, ease: "expo.out" }, 0);
+    // La réponse monte, ses mots s'écrivent.
+    tl.fromTo("#s4-answer", { y: 160, opacity: 0 }, { y: 0, opacity: 1, duration: 0.8, ease: "expo.out" }, 0.25);
+    tl.fromTo("#s4-text .t", { opacity: 0, filter: "blur(6px)" },
+      { opacity: 1, filter: "blur(0px)", duration: 0.18, stagger: 0.16, ease: "power4.out" }, 0.75);
+    tl.fromTo("#s4-actions", { opacity: 0 }, { opacity: 1, duration: 0.3, ease: "power2.out" }, 1.5);
+    // Le curseur entre et clique sur « Accepter cette réponse ».
+    tl.fromTo("#s4-cursor", { x: 1860, y: 1120 }, { x: 560, y: 905, duration: 1.0, ease: "power3.inOut" }, 2.2);
+    tl.to("#s4-cursor", { scale: 0.82, duration: 0.08, ease: "power2.in" }, 3.3);
+    tl.to("#s4-accept", { scale: 0.94, duration: 0.08, ease: "power2.in" }, 3.3);
+    tl.to("#s4-cursor", { scale: 1, duration: 0.18, ease: "power2.out" }, 3.38);
+    // Le bouton devient la mention « Réponse acceptée », la pastille « Résolue » se pose.
+    tl.to("#s4-accept", { scale: 1, background: "rgba(16,185,129,0.15)", color: "#bbf7d0", boxShadow: "inset 0 0 0 2px rgba(52,211,153,0.5)", duration: 0.25, ease: "power2.out" }, 3.4);
+    tl.set("#s4-accept", { textContent: "✓ Réponse acceptée" }, 3.42);
+    tl.fromTo("#s4-answer", { borderColor: "#1e3029" }, { borderColor: "rgba(52,211,153,0.55)", duration: 0.4, ease: "power2.out" }, 3.42);
+    tl.fromTo("#s4-resolved", { opacity: 0, scale: 0.4 }, { opacity: 1, scale: 1, duration: 0.55, ease: "elastic.out(1, 0.6)" }, 3.55);
+    tl.to("#s4-cursor", { x: 1500, y: 1180, opacity: 0, duration: 0.5, ease: "power3.in" }, 4.3);
+    window.__timelines["s4-reponse"] = tl;
+  </script>
+</template>

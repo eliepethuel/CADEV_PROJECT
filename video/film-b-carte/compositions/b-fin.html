@@ -1,0 +1,49 @@
+<template>
+  <style>
+    #root { position: absolute; inset: 0; overflow: hidden; }
+    #bf-clip { position: absolute; inset: 0; }
+    #bf-lockup { position: absolute; left: 0; right: 0; top: 330px; display: flex; justify-content: center; align-items: center; gap: 40px; }
+    #bf-mark { position: relative; width: 190px; height: 190px; border-radius: 52px; background: #13221c; overflow: hidden; box-shadow: 0 0 0 3px #1e3029; }
+    #bf-fill { position: absolute; inset: 0; background: linear-gradient(135deg, #34d399, #059669); }
+    #bf-letter { position: absolute; inset: 0; display: grid; place-items: center; font: 700 112px/1 "Space Grotesk", sans-serif; color: #050b08; }
+    #bf-dot { position: absolute; right: 26px; top: 26px; width: 30px; height: 30px; border-radius: 99px; background: #fbbf24; }
+    #bf-word { font: 700 148px/1 "Space Grotesk", sans-serif; letter-spacing: -0.04em; color: #e9f2ed; white-space: nowrap; }
+    #bf-word span { color: #34d399; }
+    #bf-frise { position: absolute; left: 0; right: 0; top: 640px; display: flex; justify-content: center; align-items: center; gap: 22px; font: 700 34px/1 "Space Grotesk", sans-serif; letter-spacing: 0.02em; color: #93a79e; }
+    #bf-frise .step:last-child { color: #fbbf24; }
+    #bf-frise .arrow { color: #34d399; }
+    #bf-tag { position: absolute; left: 0; right: 0; top: 790px; text-align: center; font: 600 30px/1 "Inter", sans-serif; letter-spacing: 0.3em; color: #e9f2ed; }
+  </style>
+  <div id="root" data-composition-id="b-fin" data-width="1920" data-height="1080">
+    <div id="bf-clip" class="clip" data-start="0" data-duration="6.5" data-layout-allow-overflow>
+      <div id="bf-lockup">
+        <div id="bf-mark"><div id="bf-fill"></div><div id="bf-letter">A</div><div id="bf-dot"></div></div>
+        <div id="bf-word">AfriDev <span>Community</span></div>
+      </div>
+      <div id="bf-frise">
+        <span class="step">DISCUSSION</span><span class="arrow">→</span>
+        <span class="step">RENCONTRE</span><span class="arrow">→</span>
+        <span class="step">ÉQUIPE</span><span class="arrow">→</span>
+        <span class="step">PROJET</span><span class="arrow">→</span>
+        <span class="step">RÉALISATION</span><span class="arrow">→</span>
+        <span class="step">OPPORTUNITÉ</span>
+      </div>
+      <div id="bf-tag">CADEV 2026</div>
+    </div>
+  </div>
+  <script>
+    const tl = gsap.timeline({ paused: true });
+    // Le monogramme se pose puis se remplit de bas en haut.
+    tl.fromTo("#bf-mark", { scale: 0.2, opacity: 0, rotation: -12 }, { scale: 1, opacity: 1, rotation: 0, duration: 0.8, ease: "elastic.out(1, 0.75)" }, 0.1);
+    tl.fromTo("#bf-fill", { clipPath: "inset(100% 0 0 0)" }, { clipPath: "inset(0% 0 0 0)", duration: 0.6, ease: "power3.inOut" }, 0.5);
+    tl.fromTo("#bf-letter", { opacity: 0, y: 30 }, { opacity: 1, y: 0, duration: 0.5, ease: "expo.out" }, 0.85);
+    tl.fromTo("#bf-dot", { scale: 0 }, { scale: 1, duration: 0.5, ease: "elastic.out(1, 0.5)" }, 1.0);
+    // Le nom s'écrit, balayé de gauche à droite.
+    tl.fromTo("#bf-word", { clipPath: "inset(0 100% 0 0)", x: -30 }, { clipPath: "inset(0 0% 0 0)", x: 0, duration: 0.8, ease: "power3.out" }, 0.95);
+    // Le parcours se trace, étape par étape.
+    tl.fromTo("#bf-frise > span", { opacity: 0, filter: "blur(6px)" },
+      { opacity: 1, filter: "blur(0px)", duration: 0.2, stagger: 0.11, ease: "power4.out" }, 2.0);
+    tl.fromTo("#bf-tag", { opacity: 0, filter: "blur(8px)" }, { opacity: 1, filter: "blur(0px)", duration: 0.25, ease: "power4.out" }, 3.6);
+    window.__timelines["b-fin"] = tl;
+  </script>
+</template>

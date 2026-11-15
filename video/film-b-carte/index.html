@@ -1,0 +1,58 @@
+<!doctype html>
+<html lang="fr" data-resolution="landscape">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=1920, height=1080" />
+    <script src="https://cdn.jsdelivr.net/npm/gsap@3.15.0/dist/gsap.min.js"></script>
+    <link rel="stylesheet" href="assets/ui.css" />
+    <style>
+      * { margin: 0; padding: 0; box-sizing: border-box; }
+      html, body { margin: 0; width: 1920px; height: 1080px; overflow: hidden; background: #050b08; }
+      #ground {
+        position: absolute;
+        inset: 0;
+        background:
+          linear-gradient(rgba(233, 242, 237, 0.035) 2px, transparent 2px) 0 0 / 48px 48px,
+          linear-gradient(90deg, rgba(233, 242, 237, 0.035) 2px, transparent 2px) 0 0 / 48px 48px,
+          #050b08;
+      }
+    </style>
+  </head>
+  <body>
+    <!-- Film B « La carte s'allume » : un seul vol au-dessus du continent, la voix off est l'horloge. -->
+    <div id="root" data-composition-id="main" data-start="0" data-duration="35.5" data-width="1920" data-height="1080">
+      <div id="ground"></div>
+
+      <div id="b-voyage" data-composition-id="b-voyage" data-composition-src="compositions/b-voyage.html" data-start="0" data-duration="29" data-track-index="1" data-track-kind="graphics" data-width="1920" data-height="1080"></div>
+      <div id="b-fin" data-composition-id="b-fin" data-composition-src="compositions/b-fin.html" data-start="29" data-duration="6.5" data-track-index="1" data-track-kind="graphics" data-width="1920" data-height="1080"></div>
+
+      <!-- Voix off -->
+      <audio id="vo-b01" class="clip" src="assets/voice/b01.wav" data-start="0.6" data-duration="2.93" data-track-index="10" data-volume="1"></audio>
+      <audio id="vo-b02" class="clip" src="assets/voice/b02.wav" data-start="3.8" data-duration="2.01" data-track-index="10" data-volume="1"></audio>
+      <audio id="vo-b03" class="clip" src="assets/voice/b03.wav" data-start="6" data-duration="2.31" data-track-index="10" data-volume="1"></audio>
+      <audio id="vo-b04" class="clip" src="assets/voice/b04.wav" data-start="8.6" data-duration="2.48" data-track-index="10" data-volume="1"></audio>
+      <audio id="vo-b05" class="clip" src="assets/voice/b05.wav" data-start="11.8" data-duration="3.59" data-track-index="10" data-volume="1"></audio>
+      <audio id="vo-b06" class="clip" src="assets/voice/b06.wav" data-start="15.7" data-duration="2.63" data-track-index="10" data-volume="1"></audio>
+      <audio id="vo-b07" class="clip" src="assets/voice/b07.wav" data-start="18.7" data-duration="3.2" data-track-index="10" data-volume="1"></audio>
+      <audio id="vo-b08" class="clip" src="assets/voice/b08.wav" data-start="22.3" data-duration="2.97" data-track-index="10" data-volume="1"></audio>
+      <audio id="vo-b09" class="clip" src="assets/voice/b09.wav" data-start="25.8" data-duration="2.56" data-track-index="10" data-volume="1"></audio>
+      <audio id="vo-b10" class="clip" src="assets/voice/b10.wav" data-start="29.3" data-duration="4.06" data-track-index="10" data-volume="1"></audio>
+
+      <!-- Bruitages -->
+      <audio id="sfx-relie" class="clip" src="assets/sfx/whoosh-cinematic.mp3" data-start="4.4" data-duration="3" data-track-index="11" data-volume="0.4" data-fade-out="0.4"></audio>
+      <audio id="sfx-dakar" class="clip" src="assets/sfx/whoosh-short.mp3" data-start="9.12" data-duration="0.58" data-track-index="11" data-volume="0.35"></audio>
+      <audio id="sfx-accra" class="clip" src="assets/sfx/whoosh.mp3" data-start="12.22" data-duration="0.58" data-track-index="11" data-volume="0.35"></audio>
+      <audio id="sfx-lagos" class="clip" src="assets/sfx/whoosh-short.mp3" data-start="16.02" data-duration="0.58" data-track-index="11" data-volume="0.35"></audio>
+      <audio id="sfx-rejoindre" class="clip" src="assets/sfx/click.mp3" data-start="17.263" data-duration="0.37" data-track-index="12" data-volume="0.5"></audio>
+      <audio id="sfx-nairobi" class="clip" src="assets/sfx/whoosh.mp3" data-start="19.42" data-duration="0.58" data-track-index="11" data-volume="0.35"></audio>
+      <audio id="sfx-tache" class="clip" src="assets/sfx/pop.mp3" data-start="20.913" data-duration="0.72" data-track-index="12" data-volume="0.4"></audio>
+      <audio id="sfx-johannesburg" class="clip" src="assets/sfx/whoosh-short.mp3" data-start="22.92" data-duration="0.58" data-track-index="11" data-volume="0.35"></audio>
+      <audio id="sfx-date-limite" class="clip" src="assets/sfx/pop.mp3" data-start="23.513" data-duration="0.72" data-track-index="12" data-volume="0.4"></audio>
+      <audio id="sfx-montee" class="clip" src="assets/sfx/riser.mp3" data-start="26.1" data-duration="3.1" data-track-index="11" data-volume="0.4" data-fade-in="0.6"></audio>
+      <audio id="sfx-impact" class="clip" src="assets/sfx/impact-bass-1.mp3" data-start="29.07" data-duration="2.12" data-track-index="12" data-volume="0.55"></audio>
+    </div>
+    <script>
+      window.__timelines["main"] = gsap.timeline({ paused: true });
+    </script>
+  </body>
+</html>
