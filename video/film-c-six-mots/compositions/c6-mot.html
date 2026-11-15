@@ -1,0 +1,58 @@
+<template>
+  <style>
+    #root { position: absolute; inset: 0; overflow: hidden; }
+    #c6-clip { position: absolute; inset: 0; }
+    #c6-ground { position: absolute; inset: 0; background: #0b2a1f; }
+    .c6-half { position: absolute; left: 0; right: 0; top: 0; height: 1080px; display: grid; place-items: center;
+      font: 700 236px/1 "Space Grotesk", sans-serif; letter-spacing: -0.04em; color: #fbbf24; white-space: nowrap; }
+    #c6-top { clip-path: inset(0 0 50% 0); }
+    #c6-bottom { clip-path: inset(50% 0 0 0); }
+    #c6-ui { position: absolute; left: 0; right: 0; top: 0; height: 1080px; display: grid; place-items: center; }
+    #c6-ui .ui-postcard h3, #c6-ui .c-title { margin: 22px 0 0; font: 700 54px/1.12 "Space Grotesk", sans-serif; letter-spacing: -0.02em; color: #e9f2ed; }
+    #c6-ui .ui-postcard p, #c6-ui .c-sub, #c6-ui .c-quote { margin: 18px 0 0; font: 400 30px/1.45 "Inter", sans-serif; color: #93a79e; }
+    #c6-ui .c-quote { margin: 26px 0; padding: 22px 28px; border-radius: 18px; background: rgba(255,255,255,0.03); color: #c9d6cf; }
+    #c6-ui .row { display: flex; gap: 14px; flex-wrap: wrap; align-items: center; }
+    #c6-ui .c-pair { display: grid; grid-template-columns: 1fr 1fr; gap: 30px; width: 1500px; }
+    #c6-ui .c-person { display: flex; gap: 26px; align-items: center; padding: 36px 40px; }
+    #c6-ui .c-person b { display: block; font: 700 40px/1.1 "Space Grotesk", sans-serif; color: #e9f2ed; }
+    #c6-ui .c-person .h { display: block; margin: 8px 0 16px; font: 400 28px/1.3 "Inter", sans-serif; color: #93a79e; }
+    #c6-ui .c-stats { display: grid; grid-template-columns: repeat(4, 1fr); gap: 26px; width: 1500px; }
+    #c6-ui .c-stat { padding: 36px 34px; }
+    #c6-ui .c-stat b { display: block; font: 700 110px/1 "Space Grotesk", sans-serif; letter-spacing: -0.04em; color: #e9f2ed; }
+    #c6-ui .c-stat > span { display: block; margin-top: 14px; font: 500 28px/1.3 "Inter", sans-serif; color: #93a79e; }
+    #c6-ui .c-who { position: absolute; top: 770px; display: flex; align-items: center; gap: 16px; font: 600 30px/1 "Inter", sans-serif; color: #e9f2ed; }
+  </style>
+  <div id="root" data-composition-id="c6-mot" data-width="1920" data-height="1080">
+    <div id="c6-clip" class="clip" data-start="0" data-duration="5.2" data-layout-allow-overflow>
+      <div id="c6-ground"></div>
+      <div id="c6-ui">
+    <article class="ui-panel" id="c6-card" style="width: 1300px; padding: 44px 48px; border-color: rgba(251,191,36,0.45)">
+      <div class="row" style="display:flex; gap: 14px"><span class="ui-badge ocre">Hackathon</span><span class="ui-badge">Hybride</span><span class="ui-badge brand">✓ Partenaire vérifié</span></div>
+      <h3 class="c-title">Hackathon santé numérique 2026 (fictif)</h3>
+      <p class="c-sub">Fondation Code Afrique (fictive)</p>
+      <span class="ui-badge ocre" id="c6-limit" style="margin-top: 24px">Date limite : 29 novembre 2026</span>
+    </article>
+      </div>
+      <div class="c6-half" id="c6-top" aria-hidden="true" data-layout-allow-overlap data-layout-allow-occlusion>OPPORTUNITÉ</div>
+      <div class="c6-half" id="c6-bottom" data-layout-allow-overlap data-layout-allow-occlusion>OPPORTUNITÉ</div>
+    </div>
+  </div>
+  <script>
+    const tl = gsap.timeline({ paused: true });
+    // Le mot se pose plein cadre, coupé net sur le temps.
+    tl.fromTo(".c6-half", { scale: 1.12, opacity: 0.4, filter: "blur(8px)" },
+      { scale: 1, opacity: 1, filter: "blur(0px)", duration: 0.35, ease: "expo.out" }, 0);
+    // Il se fend : ses moitiés encadrent l'écran réel de l'étape.
+    tl.to("#c6-top", { y: -380, duration: 0.6, ease: "power3.inOut" }, 0.95);
+    tl.to("#c6-bottom", { y: 380, duration: 0.6, ease: "power3.inOut" }, 0.95);
+    tl.fromTo("#c6-ui", { opacity: 0, scale: 0.86, filter: "blur(10px)" },
+      { opacity: 1, scale: 1, filter: "blur(0px)", duration: 0.7, ease: "expo.out" }, 1.05);
+    tl.fromTo("#c6-limit", { opacity: 0, scale: 0.5 }, { opacity: 1, scale: 1, duration: 0.5, ease: "elastic.out(1, 0.65)" }, 2.4);
+    // Tout se referme sur le mot suivant.
+    tl.to("#c6-ui", { opacity: 0, scale: 0.9, filter: "blur(10px)", duration: 0.3, ease: "power3.in" }, 4.45);
+    tl.to("#c6-top", { y: 0, duration: 0.35, ease: "power3.in" }, 4.45);
+    tl.to("#c6-bottom", { y: 0, duration: 0.35, ease: "power3.in" }, 4.45);
+    tl.to(".c6-half", { scale: 0.8, opacity: 0, filter: "blur(12px)", duration: 0.25, ease: "power3.in" }, 4.8);
+    window.__timelines["c6-mot"] = tl;
+  </script>
+</template>
