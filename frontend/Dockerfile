@@ -4,7 +4,10 @@
 FROM node:22-alpine AS deps
 WORKDIR /app
 COPY package.json package-lock.json .npmrc ./
-RUN npm ci --no-audit --no-fund
+# sharp (optimiseur d'images, lié à libvips sous LGPL) est une dépendance optionnelle de
+# Next.js que l'application n'utilise pas : elle est retirée avant la construction.
+RUN npm ci --no-audit --no-fund \
+    && rm -rf node_modules/sharp node_modules/@img
 
 # --- Construction ------------------------------------------------------------
 FROM node:22-alpine AS build

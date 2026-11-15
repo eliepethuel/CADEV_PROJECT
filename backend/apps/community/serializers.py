@@ -12,7 +12,7 @@ from apps.catalog.serializers import (
     TechnologyRefSerializer,
 )
 from apps.communities.models import Community
-from common.sanitization import to_plain_text
+from common.sanitization import to_excerpt, to_plain_text
 
 from .models import Answer, Comment, ContentStatus, Post
 
@@ -85,8 +85,7 @@ class PostListSerializer(serializers.ModelSerializer):
         read_only_fields = fields
 
     def get_excerpt(self, post: Post) -> str:
-        text = to_plain_text(post.content)
-        return text if len(text) <= EXCERPT_LENGTH else f"{text[: EXCERPT_LENGTH - 1].rstrip()}…"
+        return to_excerpt(post.content, EXCERPT_LENGTH)
 
 
 class PostDetailSerializer(PostListSerializer):

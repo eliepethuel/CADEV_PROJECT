@@ -41,10 +41,9 @@ def get_spec(target_type: str) -> TargetSpec | None:
 
 
 def _excerpt(text: str, length: int = 200) -> str:
-    from common.sanitization import to_plain_text
+    from common.sanitization import to_excerpt
 
-    plain = to_plain_text(text)
-    return plain if len(plain) <= length else f"{plain[: length - 1]}…"
+    return to_excerpt(text, length)
 
 
 def flag_hider(flag: str = "hidden_by_moderation") -> Callable[[Model, bool], tuple[str, str]]:

@@ -2,6 +2,7 @@
 
 Exigences liées : §13.4 (déploiement), §10.2 (sauvegarde avant mise en production réelle).
 
+Pour la mise en ligne sur un serveur (HTTPS, nom de domaine), suivre [deploiement.md](deploiement.md).
 Les commandes ci-dessous supposent la pile `docker-compose.yml` (services `db` et `backend`).
 Adapter les noms de service ou d'utilisateur PostgreSQL à l'hébergement retenu.
 

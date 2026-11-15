@@ -176,6 +176,7 @@ REST_FRAMEWORK = {
         "anon": env("THROTTLE_ANON", default="120/min"),
         "user": env("THROTTLE_USER", default="300/min"),
         "login": env("THROTTLE_LOGIN", default="10/min"),
+        "token_refresh": env("THROTTLE_TOKEN_REFRESH", default="60/min"),
         "register": env("THROTTLE_REGISTER", default="10/hour"),
         "password_reset": env("THROTTLE_PASSWORD_RESET", default="5/hour"),
         "content_create": env("THROTTLE_CONTENT_CREATE", default="30/hour"),

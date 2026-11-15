@@ -3,7 +3,7 @@
 import { AnimatePresence, motion, useMotionValueEvent, useScroll } from "motion/react";
 import Link from "next/link";
 import { usePathname, useRouter } from "next/navigation";
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 
 import { RollingNumber } from "@/components/motion/Kinetic";
 import { Avatar } from "@/components/ui/Misc";
@@ -34,6 +34,8 @@ export function Header() {
   const [hidden, setHidden] = useState(false);
   const [unread, setUnread] = useState(0);
   const [explore, setExplore] = useState(false);
+  // Vrai tant que la souris survole le menu : un clic ne doit alors pas le refermer.
+  const exploreHovered = useRef(false);
   const exploreActive = EXPLORE.some((item) => pathname.startsWith(item.href));
   const { scrollY } = useScroll();
 
@@ -100,12 +102,28 @@ export function Header() {
               </Link>
             );
           })}
-          <div className="relative" onMouseEnter={() => setExplore(true)} onMouseLeave={() => setExplore(false)}>
+          <div
+            className="relative"
+            onPointerEnter={(event) => {
+              if (event.pointerType !== "mouse") return;
+              exploreHovered.current = true;
+              setExplore(true);
+            }}
+            onPointerLeave={(event) => {
+              if (event.pointerType !== "mouse") return;
+              exploreHovered.current = false;
+              setExplore(false);
+            }}
+            onKeyDown={(event) => event.key === "Escape" && setExplore(false)}
+            onBlur={(event) => {
+              if (!event.currentTarget.contains(event.relatedTarget)) setExplore(false);
+            }}
+          >
             <button
               type="button"
               aria-expanded={explore}
               aria-haspopup="true"
-              onClick={() => setExplore((value) => !value)}
+              onClick={() => setExplore((value) => exploreHovered.current || !value)}
               className={`relative flex items-center gap-1 rounded-xl px-3.5 py-2 text-sm transition-colors ${exploreActive ? "text-ink" : "text-muted hover:text-ink"}`}
             >
               {exploreActive && <motion.span layoutId="nav-active" className="absolute inset-0 -z-10 rounded-xl border border-line bg-panel-2" transition={{ type: "spring", stiffness: 380, damping: 32 }} />}
@@ -123,7 +141,7 @@ export function Header() {
                   transition={{ duration: 0.18 }}
                   className="absolute left-1/2 top-full w-72 -translate-x-1/2 pt-2"
                 >
-                  <div className="glass rounded-2xl border border-line p-2 shadow-2xl" onClick={() => setExplore(false)}>
+                  <div className="rounded-2xl border border-line bg-panel p-2 shadow-2xl" onClick={() => setExplore(false)}>
                     {EXPLORE.map((item, index) => (
                       <motion.div key={item.href} initial={{ opacity: 0, x: -6 }} animate={{ opacity: 1, x: 0 }} transition={{ delay: 0.03 * index }}>
                         <Link href={item.href} className="group block rounded-xl px-3 py-2.5 hover:bg-white/5">
@@ -206,7 +224,7 @@ export function Header() {
             initial={{ opacity: 0, y: -12, scale: 0.98 }}
             animate={{ opacity: 1, y: 0, scale: 1 }}
             exit={{ opacity: 0, y: -12, scale: 0.98 }}
-            className="glass mx-auto mt-2 max-w-6xl rounded-2xl border border-line p-2 md:hidden"
+            className="mx-auto mt-2 max-h-[calc(100dvh-6rem)] max-w-6xl overflow-y-auto rounded-2xl border border-line bg-panel p-2 shadow-2xl md:hidden"
             onClick={() => setOpen(false)}
           >
             {links.map((link, index) => (

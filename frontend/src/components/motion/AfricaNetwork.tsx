@@ -1,15 +1,16 @@
 "use client";
 
-import { motion, useReducedMotion } from "motion/react";
+import { motion } from "motion/react";
 
 import { ARCS, CITIES, DOTS, VIEW_HEIGHT, VIEW_WIDTH } from "./africa";
+import { usePrefersReducedMotion } from "./usePrefersReducedMotion";
 
 /**
  * Carte de l'Afrique en matrice de points : des villes pulsent et des arcs lumineux
  * relient les développeurs du continent. Purement décorative (aria-hidden).
  */
 export function AfricaNetwork({ className = "" }: { className?: string }) {
-  const reduced = useReducedMotion();
+  const reduced = usePrefersReducedMotion();
 
   return (
     <svg viewBox={`-2 -2 ${VIEW_WIDTH + 4} ${VIEW_HEIGHT + 4}`} className={className} aria-hidden role="presentation">

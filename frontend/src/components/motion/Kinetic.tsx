@@ -1,7 +1,9 @@
 "use client";
 
-import { AnimatePresence, motion, useInView, useMotionValue, useReducedMotion, useSpring } from "motion/react";
+import { AnimatePresence, motion, useInView, useMotionValue, useSpring } from "motion/react";
 import { useEffect, useRef, useState } from "react";
+
+import { usePrefersReducedMotion } from "./usePrefersReducedMotion";
 
 const EASE = [0.22, 1, 0.36, 1] as const;
 
@@ -30,7 +32,7 @@ export function KineticHeadline({ text, className, delay = 0 }: { text: string; 
 /** Mot qui change en boucle avec un glissement flouté. */
 export function RotatingWord({ words, interval = 2400, className }: { words: string[]; interval?: number; className?: string }) {
   const [index, setIndex] = useState(0);
-  const reduced = useReducedMotion();
+  const reduced = usePrefersReducedMotion();
 
   useEffect(() => {
     if (reduced) return;

@@ -347,6 +347,16 @@ MEMBERS = [
 
 # (auteur, type, catégorie, titre, contenu, technologies, tags)
 POSTS = [
+    # Publication signalée de la démo de modération : créée en premier pour rester en bas du fil.
+    (
+        "spam_demo",
+        "DISCUSSION",
+        "carriere-formation-et-orientation",
+        "Gagnez 500 000 FCFA par jour sans travailler",
+        "<p>Contenu de test pour la démonstration de la modération : offre trompeuse fictive.</p>",
+        [],
+        [],
+    ),
     (
         "awa_diop",
         "QUESTION",
@@ -457,15 +467,6 @@ POSTS = [
         "fréquentes et comment m'entraîner ?</p>",
         ["python"],
         ["entretien technique", "stage"],
-    ),
-    (
-        "spam_demo",
-        "DISCUSSION",
-        "carriere-formation-et-orientation",
-        "Gagnez 500 000 FCFA par jour sans travailler",
-        "<p>Contenu de test pour la démonstration de la modération : offre trompeuse fictive.</p>",
-        [],
-        [],
     ),
 ]
 

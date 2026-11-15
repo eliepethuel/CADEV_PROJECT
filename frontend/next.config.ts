@@ -1,14 +1,14 @@
 import type { NextConfig } from "next";
 
-const apiOrigin = process.env.NEXT_PUBLIC_API_BASE_URL
-  ? new URL(process.env.NEXT_PUBLIC_API_BASE_URL).origin
-  : "http://localhost:8000";
-
 const nextConfig: NextConfig = {
   output: "standalone",
   poweredByHeader: false,
-  images: {
-    remotePatterns: [new URL(`${apiOrigin}/media/**`)],
+  // Les images (avatars) sont servies telles quelles par l'API : l'optimiseur d'images de
+  // Next.js est désactivé et sa dépendance optionnelle sharp (libvips, LGPL) n'est ni
+  // installée dans l'image Docker ni embarquée dans la sortie standalone.
+  images: { unoptimized: true },
+  outputFileTracingExcludes: {
+    "*": ["node_modules/sharp/**", "node_modules/@img/**"],
   },
   async headers() {
     return [

@@ -92,7 +92,9 @@ class LoginView(PublicAuthView):
 
 
 class TokenRefreshView(PublicAuthView):
-    throttle_scope = "login"
+    # Périmètre distinct de la connexion : chaque chargement de page renouvelle la session,
+    # ce qui épuiserait la limite anti-force brute et bloquerait les connexions.
+    throttle_scope = "token_refresh"
 
     @extend_schema(
         tags=TAG,

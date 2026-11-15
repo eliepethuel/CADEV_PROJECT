@@ -1,11 +1,13 @@
 "use client";
 
-import { motion, useMotionTemplate, useMotionValue, useReducedMotion, useSpring, useTransform } from "motion/react";
+import { motion, useMotionTemplate, useMotionValue, useSpring, useTransform } from "motion/react";
 import type { MouseEvent, ReactNode } from "react";
+
+import { usePrefersReducedMotion } from "./usePrefersReducedMotion";
 
 /** Élément « magnétique » : il suit légèrement le curseur puis revient en place. */
 export function Magnetic({ children, strength = 0.35, className }: { children: ReactNode; strength?: number; className?: string }) {
-  const reduced = useReducedMotion();
+  const reduced = usePrefersReducedMotion();
   const x = useSpring(0, { stiffness: 220, damping: 15 });
   const y = useSpring(0, { stiffness: 220, damping: 15 });
 
@@ -45,7 +47,7 @@ export function SpotlightCard({
   tilt?: boolean;
   glow?: string;
 }) {
-  const reduced = useReducedMotion();
+  const reduced = usePrefersReducedMotion();
   const mouseX = useMotionValue(-400);
   const mouseY = useMotionValue(-400);
   const px = useMotionValue(0.5);

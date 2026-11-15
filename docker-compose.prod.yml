@@ -1,0 +1,85 @@
+# Mise en ligne sur un serveur unique : proxy HTTPS (Caddy), frontend, API et PostgreSQL.
+#
+#   cp .env.example .env    # puis renseigner DOMAIN, DJANGO_SECRET_KEY, POSTGRES_PASSWORD
+#   docker compose -f docker-compose.prod.yml up --build -d
+#
+# Le site et l'API partagent le même domaine : https://DOMAIN/ et https://DOMAIN/api/v1/.
+# Procédure complète : docs/deploiement.md
+
+services:
+  db:
+    image: postgres:16-alpine
+    restart: unless-stopped
+    environment:
+      POSTGRES_DB: ${POSTGRES_DB:-afridev}
+      POSTGRES_USER: ${POSTGRES_USER:-afridev}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:?Renseigner POSTGRES_PASSWORD dans .env}
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U ${POSTGRES_USER:-afridev} -d ${POSTGRES_DB:-afridev}"]
+      interval: 5s
+      timeout: 5s
+      retries: 10
+
+  backend:
+    build:
+      context: .
+      dockerfile: docker/Dockerfile
+    restart: unless-stopped
+    depends_on:
+      db:
+        condition: service_healthy
+    environment:
+      DJANGO_SETTINGS_MODULE: config.settings.prod
+      DJANGO_SECRET_KEY: ${DJANGO_SECRET_KEY:?Renseigner DJANGO_SECRET_KEY dans .env}
+      DJANGO_ALLOWED_HOSTS: ${DOMAIN:?Renseigner DOMAIN dans .env}
+      # Base gérée externe : définir PROD_DATABASE_URL dans .env (le service db reste alors inutilisé).
+      DATABASE_URL: ${PROD_DATABASE_URL:-postgres://${POSTGRES_USER:-afridev}:${POSTGRES_PASSWORD}@db:5432/${POSTGRES_DB:-afridev}}
+      CORS_ALLOWED_ORIGINS: https://${DOMAIN}
+      CSRF_TRUSTED_ORIGINS: https://${DOMAIN}
+      FRONTEND_URL: https://${DOMAIN}
+      DJANGO_SERVE_MEDIA: "True"
+      DJANGO_MEDIA_ROOT: /app/media
+      EMAIL_BACKEND: ${EMAIL_BACKEND:-django.core.mail.backends.console.EmailBackend}
+      EMAIL_HOST: ${EMAIL_HOST:-}
+      EMAIL_PORT: ${EMAIL_PORT:-587}
+      EMAIL_HOST_USER: ${EMAIL_HOST_USER:-}
+      EMAIL_HOST_PASSWORD: ${EMAIL_HOST_PASSWORD:-}
+      DEFAULT_FROM_EMAIL: ${DEFAULT_FROM_EMAIL:-AfriDev Community <no-reply@afridev.local>}
+      SEED_REFERENCE: ${SEED_REFERENCE:-1}
+      SEED_DEMO: ${SEED_DEMO:-0}
+    volumes:
+      - media_data:/app/media
+
+  frontend:
+    build:
+      context: frontend
+      args:
+        # Adresse de l'API vue par le navigateur, figée à la construction de l'image.
+        NEXT_PUBLIC_API_BASE_URL: https://${DOMAIN}/api/v1
+    restart: unless-stopped
+    depends_on:
+      - backend
+
+  proxy:
+    image: caddy:2-alpine
+    restart: unless-stopped
+    depends_on:
+      - backend
+      - frontend
+    environment:
+      DOMAIN: ${DOMAIN}
+    ports:
+      - "80:80"
+      - "443:443"
+    volumes:
+      - ./docker/Caddyfile:/etc/caddy/Caddyfile:ro
+      - caddy_data:/data
+      - caddy_config:/config
+
+volumes:
+  postgres_data:
+  media_data:
+  caddy_data:
+  caddy_config:

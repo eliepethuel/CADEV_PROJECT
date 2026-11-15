@@ -11,7 +11,7 @@ from rest_framework import exceptions
 
 from common.exceptions import BusinessRuleViolation, InvalidTransition, api_exception_handler
 from common.logging import JSONFormatter
-from common.sanitization import has_visible_text, sanitize_rich_text
+from common.sanitization import has_visible_text, sanitize_rich_text, to_excerpt
 from common.transitions import can_transition, ensure_transition
 from common.validators import validate_http_url, validate_image_upload
 
@@ -55,6 +55,29 @@ class TestSanitization:
         assert sanitize_rich_text(None) == ""
         assert not has_visible_text("<p> </p>")
         assert has_visible_text("<p>ok</p>")
+
+
+class TestExcerpt:
+    def test_block_elements_are_separated_by_a_space(self):
+        content = (
+            "<h2>Objectif</h2><p>Un déploiement.</p><ul><li>Dockerfile</li><li>Compose</li></ul>"
+        )
+
+        assert to_excerpt(content, 200) == "Objectif Un déploiement. Dockerfile Compose"
+
+    def test_inline_elements_stay_attached_to_their_punctuation(self):
+        assert to_excerpt("<p>Utilisez <code>Count</code>, puis testez.</p>", 200) == (
+            "Utilisez Count, puis testez."
+        )
+
+    def test_long_text_is_truncated_with_an_ellipsis(self):
+        excerpt = to_excerpt("<p>" + "mot " * 100 + "</p>", 20)
+
+        assert len(excerpt) <= 20
+        assert excerpt.endswith("…")
+
+    def test_empty_content(self):
+        assert to_excerpt(None, 50) == ""
 
 
 class TestUrlValidator:

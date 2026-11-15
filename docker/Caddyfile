@@ -1,0 +1,14 @@
+# Proxy HTTPS de la mise en ligne : certificat obtenu et renouvelé automatiquement pour DOMAIN.
+# L'API, l'administration, les fichiers statiques et les médias vont à Django ; le reste à Next.js.
+{$DOMAIN} {
+	encode zstd gzip
+
+	@backend path /api/* /admin/* /static/* /media/*
+	handle @backend {
+		reverse_proxy backend:8000
+	}
+
+	handle {
+		reverse_proxy frontend:3000
+	}
+}

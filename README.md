@@ -53,7 +53,7 @@ backend/
 │   └── moderation/    # signalements, actions, journal d'audit
 └── tests/             # scénarios de bout en bout
 docs/                  # cahier des charges, ADR, guide API, modération
-docker/                # Dockerfile, entrypoint
+docker/                # Dockerfile, entrypoint, Caddyfile (proxy HTTPS de production)
 ```
 
 Décisions structurantes : [docs/adr/](docs/adr) (authentification, UUID, votes, suppression
@@ -170,7 +170,8 @@ Voir [.env.example](.env.example) (aucun secret réel n'est versionné). Princip
 | `AUTH_COOKIE_SAMESITE`, `AUTH_COOKIE_SECURE`, `AUTH_COOKIE_DOMAIN` | cookie de session |
 | `JWT_ACCESS_MINUTES`, `JWT_REFRESH_DAYS` | durées des jetons |
 | `EMAIL_*` | envoi d'e-mails (console par défaut) |
-| `THROTTLE_*` | limites de débit |
+| `THROTTLE_*` | limites de débit (connexion, renouvellement de session, publication…) |
+| `DOMAIN`, `PROD_DATABASE_URL` | mise en ligne ([guide](docs/deploiement.md)) |
 
 ## Comptes de démonstration
 
@@ -197,7 +198,7 @@ membres et attribution d'une tâche. Ce parcours est vérifié par
 
 ## Qualité
 
-- 503 tests backend, couverture **97 %** (`apps/` + `common/`, seuil CI : 85 %).
+- 509 tests backend, couverture **97 %** (`apps/` + `common/`, seuil CI : 85 %).
 - Permissions testées par rôle (anonyme, membre, auteur, autre membre, rôles projet,
   modérateur, administrateur), IDOR, non-fuite des champs privés, transitions interdites,
   limites de débit.
@@ -284,7 +285,8 @@ Choix et limites : [ADR 0006](docs/adr/0006-extensions-p2.md).
 - La CI GitHub Actions a été reproduite localement (lint, migrations, `check --deploy`,
   schéma, tests, frontend, images) ; son résultat sur GitHub est à consulter dans l'onglet
   Actions du dépôt.
-- Pas de déploiement public : la démonstration se lance en local avec Docker.
+- Pas encore de déploiement public : la mise en ligne est prête
+  ([`docker-compose.prod.yml`](docker-compose.prod.yml), [guide](docs/deploiement.md)) mais reste à faire.
 
 ## Feuille de route
 
@@ -300,5 +302,8 @@ Choix et limites : [ADR 0006](docs/adr/0006-extensions-p2.md).
 - [Guide d'intégration frontend](docs/api.md)
 - [Modération](docs/moderation.md)
 - [Réputation et badges](docs/reputation.md)
-- [Exploitation : déploiement, sauvegarde, restauration](docs/operations.md)
+- [Mise en ligne](docs/deploiement.md)
+- [Exploitation : administrateur, sauvegarde, restauration](docs/operations.md)
+- [Composants tiers et licences](docs/licences.md)
+- [Refonte du frontend : notes de travail](docs/refonte_frontend.md)
 - [Décisions d'architecture](docs/adr)

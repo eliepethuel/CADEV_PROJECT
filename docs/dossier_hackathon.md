@@ -29,7 +29,7 @@ mentorat et à des événements.
 
 Le livrable comprend :
 
-- une **API REST** Django complète, testée (503 tests, 97 % de couverture) et documentée (OpenAPI) ;
+- une **API REST** Django complète, testée (509 tests, 97 % de couverture) et documentée (OpenAPI) ;
 - une **application web** Next.js animée, responsive et accessible (32 écrans) ;
 - une **administration** sur mesure, avec indicateurs en direct et outils de modération ;
 - un **environnement de démonstration** reproductible (Docker, comptes et données fictives).
@@ -183,7 +183,7 @@ fines. Les décisions structurantes sont documentées dans `docs/adr/`.
 
 **Qualité**
 
-- **503 tests backend**, couverture **97 %** (seuil imposé en CI : 85 %) ; 16 tests frontend.
+- **509 tests backend**, couverture **97 %** (seuil imposé en CI : 85 %) ; 16 tests frontend.
 - Scénarios de bout en bout rejoués via l'API, permissions testées rôle par rôle.
 - Intégration continue : lint, migrations, contrôle de déploiement, schéma OpenAPI, tests,
   build du frontend et construction des deux images Docker.

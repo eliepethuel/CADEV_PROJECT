@@ -182,6 +182,21 @@ class TestRefresh:
         assert response.status_code == 401
         assert response.json()["code"] == "refresh_token_invalid"
 
+    def test_refresh_does_not_consume_the_login_limit(self, api_client, user, monkeypatch):
+        monkeypatch.setitem(ScopedWriteThrottle.THROTTLE_RATES, "login", "2/min")
+
+        statuses = [api_client.post(REFRESH_URL).status_code for _ in range(3)]
+
+        assert statuses == [401, 401, 401]
+        assert login(api_client).status_code == 200
+
+    def test_refresh_has_its_own_rate_limit(self, api_client, monkeypatch):
+        monkeypatch.setitem(ScopedWriteThrottle.THROTTLE_RATES, "token_refresh", "2/min")
+
+        statuses = [api_client.post(REFRESH_URL).status_code for _ in range(3)]
+
+        assert statuses == [401, 401, 429]
+
     def test_refresh_without_cookie(self, api_client):
         response = api_client.post(REFRESH_URL)
 
