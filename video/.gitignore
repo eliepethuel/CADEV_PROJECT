@@ -1,0 +1,9 @@
+# Caches et sorties de HyperFrames
+.hyperframes/
+.thumbnails/
+.waveform-cache/
+node_modules/
+# Films rendus (fichiers lourds, livrés à part)
+rendus/
+# Essais de voix
+voix-essais/
