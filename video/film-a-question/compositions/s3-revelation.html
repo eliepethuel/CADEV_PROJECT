@@ -1,0 +1,89 @@
+<template>
+  <style>
+    #root { position: absolute; inset: 0; overflow: hidden; }
+    #s3-form-clip, #s3-flood-clip, #s3-word-clip, #s3-site-clip { position: absolute; inset: 0; }
+    #s3-form { position: absolute; left: 360px; top: 150px; width: 1200px; padding: 48px 56px; }
+    #s3-form h2 { margin: 0 0 34px; font: 700 60px/1 "Space Grotesk", sans-serif; letter-spacing: -0.03em; color: #e9f2ed; }
+    #s3-form .field { margin-bottom: 26px; }
+    #s3-form .grid { display: grid; grid-template-columns: 1fr 1fr; gap: 26px; }
+    #s3-title-value { overflow: hidden; white-space: nowrap; }
+    #s3-publish { margin-top: 8px; }
+    #s3-flood { position: absolute; inset: 0; background: radial-gradient(120% 90% at 50% 50%, #0b2a1f 0%, #050b08 70%); }
+    #s3-word { position: absolute; left: 0; right: 0; top: 410px; text-align: center; font: 700 140px/1 "Space Grotesk", sans-serif; letter-spacing: -0.035em; color: #e9f2ed; }
+    #s3-word .w { display: inline-block; }
+    #s3-word .accent { color: #34d399; }
+    #s3-site { position: absolute; left: 160px; top: 70px; width: 1600px; }
+    #s3-site .ui-nav { margin-bottom: 44px; }
+    #s3-site h2 { font: 700 64px/1 "Space Grotesk", sans-serif; letter-spacing: -0.03em; color: #e9f2ed; margin: 0 0 30px; }
+    .s3-post { margin-bottom: 24px; }
+    .s3-post.dim::before { background: #34d399; }
+  </style>
+  <div id="root" data-composition-id="s3-revelation" data-width="1920" data-height="1080">
+    <div id="s3-form-clip" class="clip" data-start="0" data-duration="1.6">
+      <form id="s3-form" class="ui-panel">
+        <h2>Poser une question</h2>
+        <div class="grid">
+          <div class="field"><div class="ui-label">Type</div><div class="ui-input">Question <span>▾</span></div></div>
+          <div class="field"><div class="ui-label">Catégorie</div><div class="ui-input">Backend et API <span>▾</span></div></div>
+        </div>
+        <div class="field"><div class="ui-label">Titre</div><div class="ui-input" id="s3-title-value">Comment éviter les requêtes N+1 dans une API Django REST Framework ?</div></div>
+        <span class="ui-button" id="s3-publish">Publier</span>
+      </form>
+      <svg class="ui-cursor" id="s3-cursor" viewBox="0 0 32 32" aria-hidden="true">
+        <path d="M5 3 L5 25 L11 19 L15 28 L19 26 L15 17 L23 17 Z" fill="#ffffff" stroke="#050b08" stroke-width="1.6" stroke-linejoin="round" />
+      </svg>
+    </div>
+    <div id="s3-flood-clip" class="clip" data-start="1.05" data-duration="3.55">
+      <div id="s3-flood"></div>
+    </div>
+    <div id="s3-word-clip" class="clip" data-start="1.5" data-duration="1.65">
+      <h1 id="s3-word"><span class="w">AfriDev</span> <span class="w accent">Community</span></h1>
+    </div>
+    <div id="s3-site-clip" class="clip" data-start="2.8" data-duration="1.8" data-layout-allow-overflow>
+      <div id="s3-site">
+        <nav class="ui-nav" id="s3-nav">
+          <div class="ui-brand"><span class="mark">A</span><span>AfriDev<span class="dot">.</span></span></div>
+          <div class="links"><span class="on">Fil</span><span>Questions</span><span>Développeurs</span><span>Projets</span><span>Explorer ▾</span></div>
+          <span class="ui-button" style="padding: 12px 24px">+ Publier</span>
+        </nav>
+        <h2>Fil communautaire</h2>
+        <article class="ui-panel ui-postcard s3-post" id="s3-post-main">
+          <div class="row"><span class="ui-badge ocre">Question</span><span class="ui-badge">Backend et API</span></div>
+          <h3>Comment éviter les requêtes N+1 dans une API Django REST Framework ?</h3>
+          <div class="row" style="margin-top: 20px; justify-content: space-between">
+            <div class="ui-author"><span class="ui-avatar g1" style="width: 64px; height: 64px">AD</span><b>Awa Diop</b> · Dakar</div>
+            <div class="row"><span class="ui-tech">Django</span><span class="ui-tech">Python</span></div>
+          </div>
+        </article>
+        <article class="ui-panel ui-postcard s3-post dim">
+          <div class="row"><span class="ui-badge ocre">Question</span><span class="ui-badge">Développement web</span></div>
+          <h3>Par où commencer pour apprendre JavaScript après HTML et CSS ?</h3>
+        </article>
+      </div>
+    </div>
+  </div>
+  <script>
+    const tl = gsap.timeline({ paused: true });
+    // Le formulaire « Poser une question » arrive, le titre est déjà saisi.
+    tl.fromTo("#s3-form", { y: 70, opacity: 0, filter: "blur(10px)" },
+      { y: 0, opacity: 1, filter: "blur(0px)", duration: 0.55, ease: "expo.out" }, 0);
+    tl.fromTo("#s3-title-value", { clipPath: "inset(0 100% 0 0)" },
+      { clipPath: "inset(0 0% 0 0)", duration: 0.5, ease: "power2.out" }, 0.2);
+    // Clic sur « Publier » : la couleur s'ouvre depuis le bouton.
+    tl.fromTo("#s3-cursor", { x: 1500, y: 1120 }, { x: 470, y: 700, duration: 0.6, ease: "power3.inOut" }, 0.35);
+    tl.to("#s3-cursor", { scale: 0.82, duration: 0.07, ease: "power2.in" }, 1.0);
+    tl.to("#s3-publish", { scale: 0.93, duration: 0.07, ease: "power2.in" }, 1.0);
+    tl.fromTo("#s3-flood", { clipPath: "circle(0% at 25% 63%)" },
+      { clipPath: "circle(150% at 25% 63%)", duration: 0.5, ease: "power2.in" }, 1.07);
+    // Le nom se pose au moment où la voix le dit.
+    tl.fromTo("#s3-word .w", { opacity: 0, filter: "blur(10px)" },
+      { opacity: 1, filter: "blur(0px)", duration: 0.2, stagger: 0.4, ease: "power4.out" }, 1.75);
+    tl.to("#s3-word", { opacity: 0, filter: "blur(8px)", scale: 0.92, duration: 0.25, ease: "power3.in" }, 2.85);
+    // Le site apparaît : la question est publiée dans le fil.
+    tl.fromTo("#s3-nav", { y: -40, opacity: 0 }, { y: 0, opacity: 1, duration: 0.6, ease: "expo.out" }, 2.9);
+    tl.fromTo("#s3-site h2", { opacity: 0, filter: "blur(8px)" }, { opacity: 1, filter: "blur(0px)", duration: 0.2, ease: "power4.out" }, 3.0);
+    tl.fromTo(".s3-post", { y: 90, opacity: 0 },
+      { y: 0, opacity: (i) => (i === 0 ? 1 : 0.4), duration: 0.8, stagger: 0.08, ease: "expo.out" }, 3.05);
+    window.__timelines["s3-revelation"] = tl;
+  </script>
+</template>

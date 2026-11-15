@@ -1,0 +1,70 @@
+<template>
+  <style>
+    #root { position: absolute; inset: 0; overflow: hidden; }
+    #s7-clip { position: absolute; inset: 0; }
+    #s7-page { position: absolute; left: 200px; top: 90px; width: 1520px; }
+    #s7-page .eyebrow { font: 700 28px/1 "Inter", sans-serif; letter-spacing: 0.2em; text-transform: uppercase; color: #fbbf24; }
+    #s7-page h2 { margin: 16px 0 34px; font: 700 64px/1 "Space Grotesk", sans-serif; letter-spacing: -0.03em; color: #e9f2ed; }
+    #s7-request { padding: 40px 44px; }
+    #s7-request .top { display: flex; align-items: center; justify-content: space-between; }
+    #s7-request .who { display: flex; align-items: center; gap: 22px; }
+    #s7-request .who b { display: block; font: 700 36px/1.15 "Space Grotesk", sans-serif; color: #e9f2ed; }
+    #s7-request .who div span { color: #93a79e; font: 400 28px/1.3 "Inter", sans-serif; }
+    #s7-request blockquote { margin: 28px 0 0; padding: 22px 28px; border-radius: 18px; background: rgba(255, 255, 255, 0.03); font: 400 32px/1.45 "Inter", sans-serif; color: #c9d6cf; }
+    #s7-request .actions { display: flex; gap: 18px; margin-top: 28px; }
+    #s7-status { opacity: 0; }
+    #s7-team { margin-top: 30px; padding: 28px 44px; display: flex; align-items: center; gap: 22px; }
+    #s7-team h4 { margin: 0 20px 0 0; font: 700 30px/1 "Inter", sans-serif; color: #e9f2ed; }
+    #s7-team .m { display: flex; align-items: center; gap: 14px; padding: 10px 20px 10px 10px; border-radius: 999px; background: rgba(255, 255, 255, 0.04); font: 600 28px/1 "Inter", sans-serif; color: #e9f2ed; }
+  </style>
+  <div id="root" data-composition-id="s7-equipe" data-width="1920" data-height="1080">
+    <div id="s7-clip" class="clip" data-start="0" data-duration="4.0" data-layout-allow-overflow>
+      <div id="s7-page">
+        <div class="eyebrow">AgriMarché</div>
+        <h2>Demandes reçues</h2>
+        <section class="ui-panel" id="s7-request">
+          <div class="top">
+            <div class="who">
+              <span class="ui-avatar g3" style="width: 84px; height: 84px; font-size: 32px">KM</span>
+              <div><b>Kofi Mensah</b><span>Développeur frontend React · Accra</span></div>
+            </div>
+            <span class="ui-badge ocre">Développeur·se frontend React</span>
+          </div>
+          <blockquote>« Je développe en React depuis quatre ans et l'agriculture me tient à cœur. »</blockquote>
+          <div class="actions">
+            <span class="ui-button" id="s7-accept">Accepter</span>
+            <span class="ui-button ghost">Refuser</span>
+            <span class="ui-badge brand" id="s7-status">✓ Acceptée</span>
+          </div>
+        </section>
+        <section class="ui-panel" id="s7-team">
+          <h4>Équipe</h4>
+          <span class="m"><span class="ui-avatar g1" style="width: 64px; height: 64px; font-size: 28px">AD</span>Awa Diop</span>
+          <span class="m" id="s7-new"><span class="ui-avatar g3" style="width: 64px; height: 64px; font-size: 28px">KM</span>Kofi Mensah</span>
+        </section>
+      </div>
+      <svg class="ui-cursor" id="s7-cursor" viewBox="0 0 32 32" aria-hidden="true">
+        <path d="M5 3 L5 25 L11 19 L15 28 L19 26 L15 17 L23 17 Z" fill="#ffffff" stroke="#050b08" stroke-width="1.6" stroke-linejoin="round" />
+      </svg>
+    </div>
+  </div>
+  <script>
+    const tl = gsap.timeline({ paused: true });
+    tl.fromTo("#s7-page .eyebrow, #s7-page h2", { opacity: 0, filter: "blur(8px)" },
+      { opacity: 1, filter: "blur(0px)", duration: 0.2, stagger: 0.08, ease: "power4.out" }, 0);
+    tl.fromTo("#s7-request", { y: 120, opacity: 0 }, { y: 0, opacity: 1, duration: 0.8, ease: "expo.out" }, 0.1);
+    tl.fromTo("#s7-team", { y: 80, opacity: 0 }, { y: 0, opacity: 1, duration: 0.8, ease: "expo.out" }, 0.25);
+    // Le curseur clique « Accepter » au moment où la voix le dit.
+    tl.fromTo("#s7-cursor", { x: 1700, y: 1120 }, { x: 300, y: 745, duration: 0.9, ease: "power3.inOut" }, 1.3);
+    tl.to("#s7-cursor", { scale: 0.82, duration: 0.07, ease: "power2.in" }, 2.25);
+    tl.to("#s7-accept", { scale: 0.93, duration: 0.07, ease: "power2.in" }, 2.25);
+    tl.to("#s7-cursor", { scale: 1, duration: 0.18, ease: "power2.out" }, 2.32);
+    tl.to("#s7-accept", { scale: 1, duration: 0.18, ease: "power2.out" }, 2.32);
+    tl.fromTo("#s7-request", { borderColor: "#1e3029" }, { borderColor: "rgba(52,211,153,0.6)", duration: 0.35, ease: "power2.out" }, 2.35);
+    tl.fromTo("#s7-status", { opacity: 0, scale: 0.4 }, { opacity: 1, scale: 1, duration: 0.55, ease: "elastic.out(1, 0.6)" }, 2.4);
+    // Kofi rejoint l'équipe.
+    tl.fromTo("#s7-new", { opacity: 0, x: -30 }, { opacity: 1, x: 0, duration: 0.6, ease: "expo.out" }, 2.75);
+    tl.to("#s7-cursor", { x: 1600, y: 1180, opacity: 0, duration: 0.45, ease: "power3.in" }, 3.0);
+    window.__timelines["s7-equipe"] = tl;
+  </script>
+</template>

@@ -1,0 +1,54 @@
+<template>
+  <style>
+    #root { position: absolute; inset: 0; overflow: hidden; }
+    #s5-clip { position: absolute; inset: 0; }
+    #s5-page { position: absolute; left: 160px; top: 70px; width: 1600px; }
+    #s5-page h2 { margin: 0 0 30px; font: 700 64px/1 "Space Grotesk", sans-serif; letter-spacing: -0.03em; color: #e9f2ed; }
+    #s5-filters { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 26px; margin-bottom: 34px; }
+    #s5-tech { position: relative; overflow: hidden; height: 64px; }
+    #s5-tech .roll { position: absolute; left: 22px; right: 22px; top: 0; }
+    #s5-tech .roll span { display: flex; height: 60px; align-items: center; justify-content: space-between; }
+    #s5-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 26px; }
+    .s5-card { padding: 30px 34px; display: flex; gap: 24px; align-items: flex-start; }
+    .s5-card b { display: block; font: 700 32px/1.2 "Space Grotesk", sans-serif; color: #e9f2ed; }
+    .s5-card .h { display: block; margin-top: 6px; font: 400 28px/1.3 "Inter", sans-serif; color: #93a79e; }
+    .s5-card .techs { display: flex; gap: 10px; flex-wrap: wrap; margin-top: 16px; }
+    #s5-kofi { border-color: rgba(52, 211, 153, 0.35); }
+  </style>
+  <div id="root" data-composition-id="s5-recherche" data-width="1920" data-height="1080">
+    <div id="s5-clip" class="clip" data-start="0" data-duration="4.4" data-layout-allow-overflow>
+      <div id="s5-page">
+        <h2>Développeurs</h2>
+        <div id="s5-filters">
+          <div><div class="ui-label">Technologie</div>
+            <div class="ui-input" id="s5-tech"><div class="roll" id="s5-roll"><span>Toutes ▾</span><span>Django ▾</span><span>Flutter ▾</span><span style="color:#6ee7b7">React ▾</span></div></div>
+          </div>
+          <div><div class="ui-label">Pays</div><div class="ui-input">Tous <span>▾</span></div></div>
+          <div><div class="ui-label">Disponibilité</div><div class="ui-input">Toutes <span>▾</span></div></div>
+        </div>
+        <div id="s5-grid">
+          <article class="ui-panel s5-card s5-other"><span class="ui-avatar g2" style="width:76px; height: 76px">AB</span>
+            <div><b>Amina Bello</b><span class="h">Data scientist · Lagos, Nigeria</span><div class="techs"><span class="ui-tech">Python</span><span class="ui-tech">pandas</span></div></div></article>
+          <article class="ui-panel s5-card s5-other"><span class="ui-avatar g4" style="width:76px; height: 76px">IK</span>
+            <div><b>Inès Kaboré</b><span class="h">Développeuse mobile Flutter · Ouagadougou</span><div class="techs"><span class="ui-tech">Flutter</span><span class="ui-tech">Dart</span></div></div></article>
+          <article class="ui-panel s5-card" id="s5-kofi"><span class="ui-avatar g3" style="width:76px; height: 76px">KM</span>
+            <div><b>Kofi Mensah</b><span class="h">Développeur frontend React · Accra, Ghana</span><div class="techs"><span class="ui-tech">React</span><span class="ui-tech">TypeScript</span><span class="ui-tech">Next.js</span></div></div></article>
+          <article class="ui-panel s5-card s5-other"><span class="ui-avatar g1" style="width:76px; height: 76px">ZH</span>
+            <div><b>Zainab Hassan</b><span class="h">Développeuse React Native · Nairobi</span><div class="techs"><span class="ui-tech">React Native</span><span class="ui-tech">Node.js</span></div></div></article>
+        </div>
+      </div>
+    </div>
+  </div>
+  <script>
+    const tl = gsap.timeline({ paused: true });
+    tl.fromTo("#s5-page h2", { opacity: 0, filter: "blur(8px)" }, { opacity: 1, filter: "blur(0px)", duration: 0.2, ease: "power4.out" }, 0);
+    tl.fromTo("#s5-filters > div", { y: -24, opacity: 0 }, { y: 0, opacity: 1, duration: 0.6, stagger: 0.07, ease: "expo.out" }, 0.1);
+    tl.fromTo(".s5-card", { y: 80, opacity: 0 }, { y: 0, opacity: 1, duration: 0.8, stagger: 0.07, ease: "expo.out" }, 0.3);
+    // Le filtre « Technologie » roule jusqu'à « React », au moment où la voix le dit.
+    tl.fromTo("#s5-roll", { y: 0 }, { y: -180, duration: 0.45, ease: "power3.inOut" }, 3.0);
+    // Seul Kofi correspond : les autres cartes s'effacent, la sienne prend la place.
+    tl.to(".s5-other", { opacity: 0, scale: 0.94, filter: "blur(6px)", duration: 0.3, stagger: 0.04, ease: "power3.in" }, 3.5);
+    tl.to("#s5-kofi", { x: 400, y: -150, scale: 1.12, duration: 0.7, ease: "power2.inOut" }, 3.65);
+    window.__timelines["s5-recherche"] = tl;
+  </script>
+</template>
